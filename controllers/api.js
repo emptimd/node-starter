@@ -101,12 +101,13 @@ exports.getFacebook = (req, res, next) => {
  * Web scraping example using Cheerio library.
  */
 exports.getScraping = (req, res, next) => {
-  request.get('https://news.ycombinator.com/', (err, request, body) => {
+  request.get('https://yandex.ru/pogoda/kishinev', (err, request, body) => {
     if (err) { return next(err); }
     const $ = cheerio.load(body);
     const links = [];
-    $('.title a[href^="http"], a[href^="https"]').each((index, element) => {
-      links.push($(element));
+    $('a').each((index, element) => {
+      let text = $(element).text();
+      if (text.length) links.push(text);
     });
     res.render('api/scraping', {
       title: 'Web Scraping',
